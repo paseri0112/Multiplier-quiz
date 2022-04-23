@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>なんの何乗クイズ！！</title>
+</head>
+<body>
+<h1>なんの何乗でしょう？</h1>
+<hr>
+<h2>問題</h2>
+<div id="text_q"></div>
+<h2>選択</h2>
+<div id="text_w"></div>
+<h2>解答</h2>
+<div id="text_a"></div>
+
+<script type="text/javascript">
+//問題と解答
+qa = new Array();
+qa[0] = [4,"2²","1⁴","2³",1];
+qa[1] = [8,"3²","2²","2³",3];
+qa[2] = [16,"2⁴","3³","8²",1];
+qa[3] = [32,"8⁴","2⁵","4²",2];
+qa[4] = [9,"3²","4.5²","3³",1];
+qa[5] = [27,"3⁴","3³","5²",2];
+qa[6] = [81,"7²","3⁵","3⁴",3];
+qa[7] = [243,"3⁵","6³","9³",1];
+qa[8] = [16,"8²","3³","4²",3];
+qa[9] = [64,"9²","6²","4³",3];
+qa[10] = [256,"6³","4⁴","3⁵",2];
+qa[11] = [1024,"8³","5⁴","4⁵",3];
+qa[12] = [25,"50⁰·⁵","4⁵","5²",3];
+qa[13] = [125,"5³","6³","2⁶",1];
+qa[14] = [625,"7³","5⁴","8³",2];
+qa[15] = [3125,"5⁵","6⁴","4⁶",1];
+qa[16] = [36,"18²","12²","6²",3];
+qa[17] = [216,"2⁸","6³","7³",2];
+qa[18] = [1296,"4⁵","11³","6⁴",3];
+qa[19] = [7776,"6⁶","6⁵","8⁴",2];
+qa[20] = [49,"7²","7⁷","3⁴",1];
+qa[21] = [343,"8³","9³","7³",3];
+qa[22] = [2401,"4⁵","7⁴","9³",2];
+qa[23] = [64,"2⁷","8⁸","8²",3];
+qa[24] = [512,"5⁴","2⁸","8³",3];
+qa[25] = [4096,"2¹³","8⁴","4⁷",2];
+qa[26] = [81,"9²","3³","9⁹",1];
+qa[27] = [729,"8³","9³","7⁴",2];
+qa[28] = [6561,"5⁵","6⁵","9⁴",3];
+qa[29] = [100,"10²","5⁸","50²",1];
+qa[30] = [1000,"10³","20²","5²⁰",1];
+qa[31] = [10000,"20³","10⁴","50³",2];
+qa[32] = [121,"11²","7³","9³",1];
+qa[33] = [1331,"17²","11³","13³",2];
+qa[34] = [14641,"9⁷","11⁴","13⁴",2];
+qa[35] = [1,"2¹","-3⁰","2⁰·⁵",2];
+qa[36] = [7,"1⁷","1⁴⁹","49⁰·⁵",3];
+qa[37] = [729,"5⁴","3⁶","7⁴",2];
+
+//初期設定
+q_sel = 3; //選択肢の数
+q_max = 10; //出題数
+counter = 0; //正解した回数
+kiki = "、なんの何乗？"; //問題文の一部ですみたまんま
+//これの中身はこちらのサイトを参考にしました⇒http://www.shurey.com/js/craft/quiz/index.html
+
+setReady();
+
+
+//初期設定
+function setReady() {
+	count = 0; //問題番号
+	ansers = new Array(); //解答記録
+	
+	//最初の問題
+	quiz();
+}
+
+//問題表示
+function quiz() {
+	//問題
+	rnd = Math.floor(Math.random() * qa.length); //乱数
+	document.getElementById("text_q").innerHTML = (count + 1) + "問目：" + qa[rnd][0] + kiki;
+	//選択肢
+	s = "";
+	for (n=1;n<=q_sel;n++) {
+		if (qa[rnd][n] != "") {
+			s += "【<a href='javascript:anser(" + n + ")'>" + n + "：" + qa[rnd][n] + "</a>】";
+		}
+	}
+	document.getElementById("text_w").innerHTML = s;
+}
+
+//解答表示
+function anser(num) {
+	var s;
+	s = (count + 1) + "問目：";
+	//答え合わせ
+	var m;
+	if (num == qa[rnd][q_sel + 1]) {
+		//正解
+		ansers[count] = "〇";
+		m = "　〇！正解！"
+		counter ++;
+	} else {
+		ansers[count] = "×";　
+		m = "　×！残念！<br>" + qa[rnd][0] + "の正解は「" + qa[rnd][qa[rnd][4]] + "」";
+	}
+	s += qa[rnd][num];
+	document.getElementById("text_a").innerHTML = s +m;
+
+	//次の問題を表示
+	count++;
+	if (count < q_max) {
+		quiz();
+	}else{
+		//終了
+		s = "<table border='2'><caption>成績発表</caption>";
+		//1行目
+		s += "<tr><th>問題</th>";
+		for (n=0;n<q_max;n++) {
+			s += "<th>" + (n+1) + "</th>";
+		}
+		s += "</tr>";
+		//2行目
+		s += "<tr><th>成績</th>";
+		for (n=0;n<q_max;n++) {
+			s += "<td>" + ansers[n] + "</td>";
+		}
+		s += "</tr>";
+		s += "</table>";
+		var l
+		if (counter == 0){
+		l = "逆にすごいね";
+		}else if(counter == 1){
+		l = "オンリ～ワ～ン♪";
+		}else if(counter == 2){
+		l = "どんまい！";
+		}else if(counter == 3){
+		l = "君ならいけるさ";
+		}else if(counter == 4){
+		l = "繰り返しやれば力はつく！";
+		}else if(counter == 5){
+		l = "お、おおおお";
+		}else if(counter == 6){
+		l = "あら素敵";
+		}else if(counter == 7){
+		l = "いい感じですねー";
+		}else if(counter == 8){
+		l = "おおいいね！その調子！！";
+		}else if(counter == 9){
+		l = "惜しい！！めちゃくちゃ惜しい！！";
+		}else if(counter == 10){
+		l = "すご！天才じゃん！パーフェクト！！！";
+		}
+		m = "<br>正解した数：" + counter + "個<br>"
+		document.getElementById("text_q").innerHTML = s + m + l;
+
+		
+
+
+		//次の選択肢
+		//s = "【<a href='javascript:history.back()'>前のページに戻るぜ</a>】";
+		s = "【<a href='javascript:setReady()'>もう一度やるぜ</a>】";
+		//s += "【<a href=''>次の問題に進む</a>】";
+		document.getElementById("text_w").innerHTML = s;
+	}
+}
+
+
+</script>
+</body>
+</html>
